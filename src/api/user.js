@@ -14,3 +14,20 @@ export const sendSms = mobile => {
     url: `/v1_0/sms/codes/${mobile}`
   })
 }
+
+export const getUserTnfo = () => {
+  return requset({
+    method: 'GET',
+    url: '/v1_0/user'
+    // headers: {
+    //   Authorization: `Bearer ${store.state.user.token}`
+    // }
+  })
+}
+
+export const getUserChannels = () => {
+  return requset({
+    method: 'GET',
+    url: '/v1_0/user/channels'
+  })
+}

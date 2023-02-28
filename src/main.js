@@ -9,6 +9,7 @@ import 'vant/lib/index.css'
 import './styles/index.less'
 
 import 'amfe-flexible'
+import './utils/dayjs'
 
 Vue.use(Vant)
 

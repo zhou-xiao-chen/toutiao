@@ -1,7 +1,9 @@
 <template>
   <div class="login-container">
     <!-- 导航栏 -->
-    <van-nav-bar class="page-nav-bar" title="登录" />
+    <van-nav-bar class="page-nav-bar" title="登录" >
+    <van-icon class="back-btn" slot="left" name="friends-o" @click="$router.back()" />
+    </van-nav-bar>
     <!-- 表单 -->
     <van-form ref="loginForm" @submit="onSubmit">
       <van-field
@@ -81,6 +83,7 @@ export default {
         const res = await login(this.user)
         this.$store.commit('setUser', res.data.data)
         this.$toast.success('登录成功')
+        this.$router.back()
       } catch (err) {
         if (err.response.status === 400) {
           this.$toast.fail('手机号或验证码错误')
@@ -115,26 +118,29 @@ export default {
 
 <style scoped lang="less">
 .login-container {
-.toutiao {
-  padding: 0 8px;
-  font-size: 18px;
-  height: 40px;
-}
-.send-sms-btn {
-  background-color: #ededed;
-  font-size: 10px;
-  color: #666;
-  width: 70px;
-  height: 20px;
-  line-height: 20px;
-  padding: 0;
-}
-.login-btn-wrap {
-  padding: 25px 15px;
-  .login-btn {
-    background-color: #6db4fb;
-    border: none;
+  .back-btn {
+    color: #fff;
   }
-}
+  .toutiao {
+    padding: 0 8px;
+    font-size: 18px;
+    height: 40px;
+  }
+  .send-sms-btn {
+    background-color: #ededed;
+    font-size: 10px;
+    color: #666;
+    width: 70px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0;
+  }
+  .login-btn-wrap {
+    padding: 25px 15px;
+    .login-btn {
+      background-color: #6db4fb;
+      border: none;
+    }
+  }
 }
 </style>
