@@ -9,6 +9,7 @@
         size="small"
         round
         icon="search"
+        to="/search"
       >搜索</van-button>
     </van-nav-bar>
     <!-- /导航栏 -->
@@ -18,7 +19,7 @@
         通过animated属性可以开启切换标签内容时的转场动画
         通过swipeable属性可以开启滑动切换标签页
     -->
-    <van-tabs class="channel-tabs" v-model="active" animated swipeable>
+    <van-tabs swipe-threshold="3" class="channel-tabs" v-model="active" animated swipeable>
         <van-tab :title="channels.name" v-for="channels in myChannels" :key="channels.id">
         <ArticleList :channels="channels" />
         </van-tab>
@@ -35,7 +36,7 @@
       position="bottom"
       :style="{ height: '100%' }"
     >
-    <ChannelEdit :myChannel="myChannels" :active="active"></ChannelEdit>
+    <ChannelEdit :myChannel="myChannels" :active="active" @updata-active="updataActive"></ChannelEdit>
     </van-popup>
   </div>
 </template>
@@ -44,6 +45,8 @@
 import { getUserChannels } from '@/api/user'
 import ArticleList from './component/article-list'
 import ChannelEdit from './component/channel-edit'
+import { mapState } from 'vuex'
+import { getItem } from '@/utils/storage'
 export default {
   // 组件名称
   name: 'HomeIndex',
@@ -64,7 +67,9 @@ export default {
     }
   },
   // 计算属性
-  computed: {},
+  computed: {
+    ...mapState(['user'])
+  },
   // 侦听器
   watch: {},
   // 生命周期钩子   注：没用到的钩子请自行删除
@@ -83,11 +88,27 @@ export default {
   methods: {
     async loadUserChannels () {
       try {
-        const res = await getUserChannels()
-        this.myChannels = res.data.data.channels
+        let channels = []
+        if (this.user) {
+          const res = await getUserChannels()
+          channels = res.data.data.channels
+        } else {
+          const localChannel = getItem('TOUTIAO_CHANNELS')
+          if (localChannel) {
+            channels = localChannel
+          } else {
+            const res = await getUserChannels()
+            channels = res.data.data.channels
+          }
+        }
+        this.myChannels = channels
       } catch (err) {
         this.$toast('获取频道失败，请稍后重试')
       }
+    },
+    updataActive (index, isChannelEditShow = true) {
+      this.active = index
+      this.isChannelEditShow = isChannelEditShow
     }
   }
 }
