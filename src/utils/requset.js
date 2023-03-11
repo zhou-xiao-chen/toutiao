@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 
 const requset = axios.create({
+  // baseURL: 'http://geek.itheima.net'
   baseURL: 'http://toutiao.itheima.net'
 })
 

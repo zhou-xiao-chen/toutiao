@@ -12,7 +12,7 @@
           <span>{{ userInfo.name }}</span>
         </div>
         <div class="right">
-          <van-button class="right-btn" size="mini" round plain hairline type="default">编辑资料</van-button>
+          <van-button class="right-btn" size="mini" round plain hairline type="default" to="/user/profile">编辑资料</van-button>
         </div>
       </div>
       <div class="my-bottom">
